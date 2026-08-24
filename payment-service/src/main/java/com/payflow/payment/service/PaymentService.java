@@ -6,6 +6,7 @@ import com.payflow.payment.repository.PaymentRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class PaymentService {
@@ -23,10 +24,23 @@ public class PaymentService {
         payment.setCustomerId(request.getCustomerId());
         payment.setMerchantId(request.getMerchantId());
         payment.setAmount(request.getAmount());
-
         payment.setStatus("SUCCESS");
         payment.setCreatedAt(LocalDateTime.now());
 
         return paymentRepository.save(payment);
+    }
+
+    public List<Payment> getAllPayments() {
+        return paymentRepository.findAll();
+    }
+
+    public Payment getPaymentById(Long id) {
+
+        return paymentRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Payment not found with id: " + id
+                        )
+                );
     }
 }
