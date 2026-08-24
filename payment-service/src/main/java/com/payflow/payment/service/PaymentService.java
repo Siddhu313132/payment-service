@@ -47,4 +47,34 @@ public class PaymentService {
                         )
                 );
     }
+
+    // Update Payment
+    public Payment updatePayment(Long id, PaymentRequest request) {
+
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() ->
+                        new PaymentNotFoundException(
+                                "Payment not found with id: " + id
+                        )
+                );
+
+        payment.setCustomerId(request.getCustomerId());
+        payment.setMerchantId(request.getMerchantId());
+        payment.setAmount(request.getAmount());
+
+        return paymentRepository.save(payment);
+    }
+
+    // Delete Payment
+    public void deletePayment(Long id) {
+
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() ->
+                        new PaymentNotFoundException(
+                                "Payment not found with id: " + id
+                        )
+                );
+
+        paymentRepository.delete(payment);
+    }
 }
