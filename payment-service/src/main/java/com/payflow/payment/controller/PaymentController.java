@@ -36,8 +36,7 @@ public class PaymentController {
     @GetMapping
     public ResponseEntity<List<Payment>> getAllPayments() {
 
-        List<Payment> payments =
-                paymentService.getAllPayments();
+        List<Payment> payments = paymentService.getAllPayments();
 
         return ResponseEntity.ok(payments);
     }
@@ -47,8 +46,7 @@ public class PaymentController {
     public ResponseEntity<Payment> getPaymentById(
             @PathVariable Long id) {
 
-        Payment payment =
-                paymentService.getPaymentById(id);
+        Payment payment = paymentService.getPaymentById(id);
 
         return ResponseEntity.ok(payment);
     }

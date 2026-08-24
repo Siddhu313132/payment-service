@@ -18,8 +18,6 @@ public class PaymentRequest {
     @Positive(message = "Amount must be greater than zero")
     private BigDecimal amount;
 
-    // Getters and Setters
-
     public String getCustomerId() {
         return customerId;
     }

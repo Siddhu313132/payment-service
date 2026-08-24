@@ -2,6 +2,7 @@ package com.payflow.payment.service;
 
 import com.payflow.payment.dto.PaymentRequest;
 import com.payflow.payment.entity.Payment;
+import com.payflow.payment.exception.PaymentNotFoundException;
 import com.payflow.payment.repository.PaymentRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ public class PaymentService {
         this.paymentRepository = paymentRepository;
     }
 
+    // Create Payment
     public Payment createPayment(PaymentRequest request) {
 
         Payment payment = new Payment();
@@ -30,15 +32,17 @@ public class PaymentService {
         return paymentRepository.save(payment);
     }
 
+    // Get All Payments
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
     }
 
+    // Get Payment By ID
     public Payment getPaymentById(Long id) {
 
         return paymentRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new PaymentNotFoundException(
                                 "Payment not found with id: " + id
                         )
                 );
