@@ -1,6 +1,11 @@
 package com.payflow.payment.controller;
 
-import com.payflow.payment.security.JwtService;
+import com.payflow.payment.dto.LoginRequest;
+import com.payflow.payment.dto.RegisterRequest;
+import com.payflow.payment.service.AuthService;
+import jakarta.validation.Valid;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,29 +13,31 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final JwtService jwtService;
+    private final AuthService authService;
 
-    public AuthController(JwtService jwtService) {
-        this.jwtService = jwtService;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(
-            @RequestParam String username,
-            @RequestParam String password) {
+    // Register User
+    @PostMapping("/register")
+    public ResponseEntity<String> register(
+            @Valid @RequestBody RegisterRequest request) {
 
-        // Temporary login for learning/testing
-        if ("admin".equals(username)
-                && "admin123".equals(password)) {
-
-            String token =
-                    jwtService.generateToken(username);
-
-            return ResponseEntity.ok(token);
-        }
+        String response = authService.register(request);
 
         return ResponseEntity
-                .status(401)
-                .body("Invalid username or password");
+                .status(HttpStatus.CREATED)
+                .body(response);
+    }
+
+    // Login User
+    @PostMapping("/login")
+    public ResponseEntity<String> login(
+            @Valid @RequestBody LoginRequest request) {
+
+        String token = authService.login(request);
+
+        return ResponseEntity.ok(token);
     }
 }
