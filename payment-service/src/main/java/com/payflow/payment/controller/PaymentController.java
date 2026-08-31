@@ -1,6 +1,7 @@
 package com.payflow.payment.controller;
 
 import com.payflow.payment.dto.PaymentRequest;
+import com.payflow.payment.dto.PaymentStatusRequest;
 import com.payflow.payment.entity.Payment;
 import com.payflow.payment.service.PaymentService;
 import jakarta.validation.Valid;
@@ -62,13 +63,29 @@ public class PaymentController {
         return ResponseEntity.ok(payment);
     }
 
-    // Delete Payment
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePayment(
+    public ResponseEntity<String> deletePayment(
             @PathVariable Long id) {
 
         paymentService.deletePayment(id);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+                "Payment deleted successfully"
+        );
     }
-}
+
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Payment> updatePaymentStatus(
+            @PathVariable Long id,
+            @Valid @RequestBody PaymentStatusRequest request) {
+
+        Payment payment =
+                paymentService.updatePaymentStatus(id, request);
+
+        return ResponseEntity.ok(payment);
+    }
+
+
+    }
+

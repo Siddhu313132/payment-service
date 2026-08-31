@@ -1,6 +1,7 @@
 package com.payflow.payment.service;
 
 import com.payflow.payment.dto.PaymentRequest;
+import com.payflow.payment.dto.PaymentStatusRequest;
 import com.payflow.payment.entity.Payment;
 import com.payflow.payment.exception.PaymentNotFoundException;
 import com.payflow.payment.repository.PaymentRepository;
@@ -48,6 +49,7 @@ public class PaymentService {
                 );
     }
 
+
     // Update Payment
     public Payment updatePayment(Long id, PaymentRequest request) {
 
@@ -65,16 +67,35 @@ public class PaymentService {
         return paymentRepository.save(payment);
     }
 
-    // Delete Payment
     public void deletePayment(Long id) {
 
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() ->
-                        new PaymentNotFoundException(
+                        new RuntimeException(
                                 "Payment not found with id: " + id
                         )
                 );
 
         paymentRepository.delete(payment);
     }
+
+    public Payment updatePaymentStatus(
+            Long id,
+            PaymentStatusRequest request) {
+
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Payment not found with id: " + id
+                        )
+                );
+
+        payment.setStatus(request.getStatus());
+
+        return paymentRepository.save(payment);
+    }
+
+
+
+
 }
