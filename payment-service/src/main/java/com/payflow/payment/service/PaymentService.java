@@ -2,6 +2,7 @@ package com.payflow.payment.service;
 
 import com.payflow.payment.dto.PaymentRequest;
 import com.payflow.payment.dto.PaymentStatusRequest;
+import com.payflow.payment.enums.PaymentStatus;
 import com.payflow.payment.entity.Payment;
 import com.payflow.payment.exception.PaymentNotFoundException;
 import com.payflow.payment.repository.PaymentRepository;
@@ -27,7 +28,7 @@ public class PaymentService {
         payment.setCustomerId(request.getCustomerId());
         payment.setMerchantId(request.getMerchantId());
         payment.setAmount(request.getAmount());
-        payment.setStatus("SUCCESS");
+        payment.setStatus(PaymentStatus.SUCCESS);
         payment.setCreatedAt(LocalDateTime.now());
 
         return paymentRepository.save(payment);

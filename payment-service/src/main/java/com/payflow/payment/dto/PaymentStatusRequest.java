@@ -1,17 +1,18 @@
 package com.payflow.payment.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import com.payflow.payment.enums.PaymentStatus;
+import jakarta.validation.constraints.NotNull;
 
 public class PaymentStatusRequest {
 
-    @NotBlank(message = "Status is required")
-    private String status;
+    @NotNull(message = "Status is required")
+    private PaymentStatus status;
 
-    public String getStatus() {
+    public PaymentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(PaymentStatus status) {
         this.status = status;
     }
 }

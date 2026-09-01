@@ -1,5 +1,6 @@
 package com.payflow.payment.entity;
 
+import com.payflow.payment.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,7 +26,9 @@ public class Payment {
 
     private BigDecimal amount;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
+
 
     private LocalDateTime createdAt;
 }
