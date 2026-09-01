@@ -14,21 +14,22 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     // Payment Not Found - 404
-    @ExceptionHandler(PaymentNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handlePaymentNotFound(
-            PaymentNotFoundException ex) {
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Map<String, Object>> handleIllegalStateException(
+            IllegalStateException ex) {
 
         Map<String, Object> errorResponse = new LinkedHashMap<>();
 
         errorResponse.put("timestamp", LocalDateTime.now());
-        errorResponse.put("status", HttpStatus.NOT_FOUND.value());
-        errorResponse.put("error", "Not Found");
+        errorResponse.put("status", HttpStatus.BAD_REQUEST.value());
+        errorResponse.put("error", "Invalid Payment Status");
         errorResponse.put("message", ex.getMessage());
 
         return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
+                .status(HttpStatus.BAD_REQUEST)
                 .body(errorResponse);
     }
+
 
     // Validation Error - 400
     @ExceptionHandler(MethodArgumentNotValidException.class)

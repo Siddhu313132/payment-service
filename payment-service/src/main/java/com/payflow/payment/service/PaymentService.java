@@ -28,7 +28,7 @@ public class PaymentService {
         payment.setCustomerId(request.getCustomerId());
         payment.setMerchantId(request.getMerchantId());
         payment.setAmount(request.getAmount());
-        payment.setStatus(PaymentStatus.SUCCESS);
+        payment.setStatus(PaymentStatus.PENDING);
         payment.setCreatedAt(LocalDateTime.now());
 
         return paymentRepository.save(payment);
@@ -86,17 +86,26 @@ public class PaymentService {
 
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException(
+                        new PaymentNotFoundException(
                                 "Payment not found with id: " + id
                         )
                 );
 
-        payment.setStatus(request.getStatus());
+        PaymentStatus currentStatus = payment.getStatus();
+        PaymentStatus newStatus = request.getStatus();
+
+        // Don't allow changing a completed payment
+        if (currentStatus == PaymentStatus.SUCCESS ||
+                currentStatus == PaymentStatus.FAILED) {
+
+            throw new IllegalStateException(
+                    "Payment status cannot be changed from "
+                            + currentStatus
+            );
+        }
+
+        payment.setStatus(newStatus);
 
         return paymentRepository.save(payment);
     }
-
-
-
-
 }
